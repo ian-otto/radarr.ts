@@ -1,6 +1,6 @@
 {
   "name": "radarr.ts",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "description": "A Radarr Typescript API generated from Swagger",
   "main": "dist/Api.js",
   "types": "dist/Api.d.ts",
