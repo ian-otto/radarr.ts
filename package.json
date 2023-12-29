@@ -1,6 +1,6 @@
 {
   "name": "radarr.ts",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A Radarr Typescript API generated from Swagger",
   "main": "dist/Api.js",
   "types": "dist/Api.d.ts",
@@ -27,10 +27,10 @@
   },
   "homepage": "https://github.com/ian-otto/radarr.ts#readme",
   "dependencies": {
-    "axios": "^0.21.4",
-    "typescript": "^4.5.5"
+    "axios": "^1.6.3",
+    "typescript": "^5.3.3"
   },
   "devDependencies": {
-    "swagger-typescript-api": "^9.3.1"
+    "swagger-typescript-api": "^13.0.3"
   }
 }

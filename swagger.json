@@ -123,6 +123,25 @@
         }
       }
     },
+    "/api": {
+      "get": {
+        "tags": [
+          "ApiInfo"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiInfoResource"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/login": {
       "post": {
         "tags": [
@@ -143,25 +162,25 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "Username": {
+                  "username": {
                     "type": "string"
                   },
-                  "Password": {
+                  "password": {
                     "type": "string"
                   },
-                  "RememberMe": {
+                  "rememberMe": {
                     "type": "string"
                   }
                 }
               },
               "encoding": {
-                "Username": {
+                "username": {
                   "style": "form"
                 },
-                "Password": {
+                "password": {
                   "style": "form"
                 },
-                "RememberMe": {
+                "rememberMe": {
                   "style": "form"
                 }
               }
@@ -189,6 +208,183 @@
       "get": {
         "tags": [
           "Authentication"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v3/autotagging": {
+      "post": {
+        "tags": [
+          "AutoTagging"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AutoTaggingResource"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutoTaggingResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutoTaggingResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutoTaggingResource"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "AutoTagging"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AutoTaggingResource"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/autotagging/{id}": {
+      "put": {
+        "tags": [
+          "AutoTagging"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AutoTaggingResource"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutoTaggingResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutoTaggingResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutoTaggingResource"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "AutoTagging"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "AutoTagging"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutoTaggingResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutoTaggingResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutoTaggingResource"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/autotagging/schema": {
+      "get": {
+        "tags": [
+          "AutoTagging"
         ],
         "responses": {
           "200": {
@@ -298,21 +494,45 @@
         "tags": [
           "Blocklist"
         ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "sortKey",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/SortDirection"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/BlocklistResourcePagingResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BlocklistResourcePagingResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/BlocklistResourcePagingResource"
                 }
@@ -455,11 +675,11 @@
             }
           },
           {
-            "name": "includeArtist",
+            "name": "tags",
             "in": "query",
             "schema": {
-              "type": "boolean",
-              "default": false
+              "type": "string",
+              "default": ""
             }
           }
         ],
@@ -467,23 +687,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MovieResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MovieResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -561,7 +765,7 @@
             }
           },
           {
-            "name": "tagList",
+            "name": "tags",
             "in": "query",
             "schema": {
               "type": "string",
@@ -588,6 +792,16 @@
       "get": {
         "tags": [
           "Collection"
+        ],
+        "parameters": [
+          {
+            "name": "tmdbId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -917,33 +1131,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CreditResource"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CreditResource"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CreditResource"
-                  }
-                }
-              }
-            }
+            "description": "Success"
           }
         }
       }
@@ -1200,16 +1388,6 @@
               "schema": {
                 "$ref": "#/components/schemas/CustomFormatResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CustomFormatResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CustomFormatResource"
-              }
             }
           }
         },
@@ -1244,23 +1422,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CustomFormatResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CustomFormatResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -1291,16 +1453,6 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CustomFormatResource"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CustomFormatResource"
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/CustomFormatResource"
               }
@@ -1682,19 +1834,19 @@
         "tags": [
           "DownloadClient"
         ],
+        "parameters": [
+          {
+            "name": "forceSave",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DownloadClientResource"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DownloadClientResource"
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/DownloadClientResource"
               }
@@ -1705,17 +1857,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/DownloadClientResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DownloadClientResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DownloadClientResource"
                 }
@@ -1732,6 +1874,14 @@
         ],
         "parameters": [
           {
+            "name": "forceSave",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
             "name": "id",
             "in": "path",
             "required": true,
@@ -1746,16 +1896,6 @@
               "schema": {
                 "$ref": "#/components/schemas/DownloadClientResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DownloadClientResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/DownloadClientResource"
-              }
             }
           }
         },
@@ -1763,17 +1903,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/DownloadClientResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DownloadClientResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DownloadClientResource"
                 }
@@ -1838,6 +1968,53 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/v3/downloadclient/bulk": {
+      "put": {
+        "tags": [
+          "DownloadClient"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DownloadClientBulkResource"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DownloadClientResource"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "DownloadClient"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DownloadClientBulkResource"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
           }
         }
       }
@@ -1944,16 +2121,6 @@
               "schema": {
                 "$ref": "#/components/schemas/DownloadClientResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DownloadClientResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/DownloadClientResource"
-              }
             }
           }
         },
@@ -1973,17 +2140,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/DownloadClientConfigResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DownloadClientConfigResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DownloadClientConfigResource"
                 }
@@ -2011,16 +2168,6 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DownloadClientConfigResource"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DownloadClientConfigResource"
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/DownloadClientConfigResource"
               }
@@ -2301,10 +2448,90 @@
         ],
         "parameters": [
           {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "sortKey",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/SortDirection"
+            }
+          },
+          {
             "name": "includeMovie",
             "in": "query",
             "schema": {
               "type": "boolean"
+            }
+          },
+          {
+            "name": "eventType",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "downloadId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "movieIds",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          },
+          {
+            "name": "languages",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          },
+          {
+            "name": "quality",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int32"
+              }
             }
           }
         ],
@@ -2312,17 +2539,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/HistoryResourcePagingResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HistoryResourcePagingResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HistoryResourcePagingResource"
                 }
@@ -2366,23 +2583,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/HistoryResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/HistoryResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -2429,23 +2630,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/HistoryResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/HistoryResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -2888,19 +3073,19 @@
         "tags": [
           "ImportList"
         ],
+        "parameters": [
+          {
+            "name": "forceSave",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImportListResource"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImportListResource"
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/ImportListResource"
               }
@@ -2911,17 +3096,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportListResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportListResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ImportListResource"
                 }
@@ -2938,6 +3113,14 @@
         ],
         "parameters": [
           {
+            "name": "forceSave",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
             "name": "id",
             "in": "path",
             "required": true,
@@ -2952,16 +3135,6 @@
               "schema": {
                 "$ref": "#/components/schemas/ImportListResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImportListResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImportListResource"
-              }
             }
           }
         },
@@ -2969,17 +3142,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportListResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportListResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ImportListResource"
                 }
@@ -3044,6 +3207,53 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/v3/importlist/bulk": {
+      "put": {
+        "tags": [
+          "ImportList"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportListBulkResource"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportListResource"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "ImportList"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportListBulkResource"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
           }
         }
       }
@@ -3150,16 +3360,6 @@
               "schema": {
                 "$ref": "#/components/schemas/ImportListResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImportListResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImportListResource"
-              }
             }
           }
         },
@@ -3179,17 +3379,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportListConfigResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportListConfigResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ImportListConfigResource"
                 }
@@ -3217,16 +3407,6 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImportListConfigResource"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImportListConfigResource"
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/ImportListConfigResource"
               }
@@ -3315,6 +3495,44 @@
             "description": "Success"
           }
         }
+      },
+      "post": {
+        "tags": [
+          "ImportListMovies"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MovieResource"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MovieResource"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MovieResource"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
       }
     },
     "/api/v3/indexer": {
@@ -3358,19 +3576,19 @@
         "tags": [
           "Indexer"
         ],
+        "parameters": [
+          {
+            "name": "forceSave",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/IndexerResource"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/IndexerResource"
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/IndexerResource"
               }
@@ -3381,17 +3599,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/IndexerResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IndexerResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/IndexerResource"
                 }
@@ -3408,6 +3616,14 @@
         ],
         "parameters": [
           {
+            "name": "forceSave",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
             "name": "id",
             "in": "path",
             "required": true,
@@ -3422,16 +3638,6 @@
               "schema": {
                 "$ref": "#/components/schemas/IndexerResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/IndexerResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/IndexerResource"
-              }
             }
           }
         },
@@ -3439,17 +3645,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/IndexerResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IndexerResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/IndexerResource"
                 }
@@ -3514,6 +3710,53 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/v3/indexer/bulk": {
+      "put": {
+        "tags": [
+          "Indexer"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IndexerBulkResource"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndexerResource"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Indexer"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IndexerBulkResource"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
           }
         }
       }
@@ -3620,16 +3863,6 @@
               "schema": {
                 "$ref": "#/components/schemas/IndexerResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/IndexerResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/IndexerResource"
-              }
             }
           }
         },
@@ -3649,17 +3882,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/IndexerConfigResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IndexerConfigResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/IndexerConfigResource"
                 }
@@ -3687,16 +3910,6 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/IndexerConfigResource"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/IndexerConfigResource"
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/IndexerConfigResource"
               }
@@ -3799,18 +4012,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/initialize.js": {
-      "get": {
-        "tags": [
-          "InitializeJs"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
           }
         }
       }
@@ -3922,26 +4123,76 @@
         }
       }
     },
-    "/api/v3/log": {
+    "/api/v3/localization/language": {
       "get": {
         "tags": [
-          "Log"
+          "Localization"
         ],
         "responses": {
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/LogResourcePagingResource"
-                }
-              },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LogResourcePagingResource"
+                  "$ref": "#/components/schemas/LocalizationLanguageResource"
                 }
-              },
-              "text/json": {
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/log": {
+      "get": {
+        "tags": [
+          "Log"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "sortKey",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/SortDirection"
+            }
+          },
+          {
+            "name": "level",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/LogResourcePagingResource"
                 }
@@ -4161,17 +4412,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/MediaManagementConfigResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MediaManagementConfigResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MediaManagementConfigResource"
                 }
@@ -4199,16 +4440,6 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MediaManagementConfigResource"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MediaManagementConfigResource"
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/MediaManagementConfigResource"
               }
@@ -4318,19 +4549,19 @@
         "tags": [
           "Metadata"
         ],
+        "parameters": [
+          {
+            "name": "forceSave",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MetadataResource"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MetadataResource"
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/MetadataResource"
               }
@@ -4341,17 +4572,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/MetadataResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MetadataResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MetadataResource"
                 }
@@ -4368,6 +4589,14 @@
         ],
         "parameters": [
           {
+            "name": "forceSave",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
             "name": "id",
             "in": "path",
             "required": true,
@@ -4382,16 +4611,6 @@
               "schema": {
                 "$ref": "#/components/schemas/MetadataResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MetadataResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/MetadataResource"
-              }
             }
           }
         },
@@ -4399,17 +4618,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/MetadataResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MetadataResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MetadataResource"
                 }
@@ -4580,16 +4789,6 @@
               "schema": {
                 "$ref": "#/components/schemas/MetadataResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MetadataResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/MetadataResource"
-              }
             }
           }
         },
@@ -4609,17 +4808,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/MetadataConfigResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MetadataConfigResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MetadataConfigResource"
                 }
@@ -4647,16 +4836,6 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MetadataConfigResource"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MetadataConfigResource"
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/MetadataConfigResource"
               }
@@ -4737,6 +4916,14 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "excludeLocalCovers",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
             }
           }
         ],
@@ -4826,6 +5013,14 @@
         ],
         "parameters": [
           {
+            "name": "moveFiles",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
             "name": "id",
             "in": "path",
             "required": true,
@@ -4888,6 +5083,22 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "deleteFiles",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "addImportExclusion",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
             }
           }
         ],
@@ -5026,23 +5237,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MovieFileResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MovieFileResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -5073,16 +5268,6 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MovieFileResource"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MovieFileResource"
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/MovieFileResource"
               }
@@ -5183,16 +5368,6 @@
               "schema": {
                 "$ref": "#/components/schemas/MovieFileListResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MovieFileListResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/MovieFileListResource"
-              }
             }
           }
         },
@@ -5211,16 +5386,6 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MovieFileListResource"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MovieFileListResource"
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/MovieFileListResource"
               }
@@ -5550,70 +5715,70 @@
         ],
         "parameters": [
           {
-            "name": "RenameMovies",
+            "name": "renameMovies",
             "in": "query",
             "schema": {
               "type": "boolean"
             }
           },
           {
-            "name": "ReplaceIllegalCharacters",
+            "name": "replaceIllegalCharacters",
             "in": "query",
             "schema": {
               "type": "boolean"
             }
           },
           {
-            "name": "ColonReplacementFormat",
+            "name": "colonReplacementFormat",
             "in": "query",
             "schema": {
               "$ref": "#/components/schemas/ColonReplacementFormat"
             }
           },
           {
-            "name": "StandardMovieFormat",
+            "name": "standardMovieFormat",
             "in": "query",
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "MovieFolderFormat",
+            "name": "movieFolderFormat",
             "in": "query",
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "IncludeQuality",
+            "name": "includeQuality",
             "in": "query",
             "schema": {
               "type": "boolean"
             }
           },
           {
-            "name": "ReplaceSpaces",
+            "name": "replaceSpaces",
             "in": "query",
             "schema": {
               "type": "boolean"
             }
           },
           {
-            "name": "Separator",
+            "name": "separator",
             "in": "query",
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "NumberStyle",
+            "name": "numberStyle",
             "in": "query",
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "Id",
+            "name": "id",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -5621,7 +5786,7 @@
             }
           },
           {
-            "name": "ResourceName",
+            "name": "resourceName",
             "in": "query",
             "schema": {
               "type": "string"
@@ -5676,19 +5841,19 @@
         "tags": [
           "Notification"
         ],
+        "parameters": [
+          {
+            "name": "forceSave",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NotificationResource"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NotificationResource"
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/NotificationResource"
               }
@@ -5699,17 +5864,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotificationResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotificationResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/NotificationResource"
                 }
@@ -5726,6 +5881,14 @@
         ],
         "parameters": [
           {
+            "name": "forceSave",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
             "name": "id",
             "in": "path",
             "required": true,
@@ -5740,16 +5903,6 @@
               "schema": {
                 "$ref": "#/components/schemas/NotificationResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NotificationResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/NotificationResource"
-              }
             }
           }
         },
@@ -5757,17 +5910,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotificationResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotificationResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/NotificationResource"
                 }
@@ -5938,16 +6081,6 @@
               "schema": {
                 "$ref": "#/components/schemas/NotificationResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NotificationResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/NotificationResource"
-              }
             }
           }
         },
@@ -5989,6 +6122,25 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ParseResource"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ping": {
+      "get": {
+        "tags": [
+          "Ping"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PingResource"
                 }
               }
             }
@@ -6430,6 +6582,14 @@
               "type": "boolean",
               "default": false
             }
+          },
+          {
+            "name": "skipRedownload",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
@@ -6498,6 +6658,14 @@
               "type": "boolean",
               "default": false
             }
+          },
+          {
+            "name": "skipRedownload",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "requestBody": {
@@ -6533,6 +6701,38 @@
         ],
         "parameters": [
           {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "sortKey",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/SortDirection"
+            }
+          },
+          {
             "name": "includeUnknownMovieItems",
             "in": "query",
             "schema": {
@@ -6547,23 +6747,50 @@
               "type": "boolean",
               "default": false
             }
+          },
+          {
+            "name": "movieIds",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          },
+          {
+            "name": "protocol",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/DownloadProtocol"
+            }
+          },
+          {
+            "name": "languages",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          },
+          {
+            "name": "quality",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/QueueResourcePagingResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QueueResourcePagingResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/QueueResourcePagingResource"
                 }
@@ -6604,16 +6831,6 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/QueueBulkResource"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/QueueBulkResource"
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/QueueBulkResource"
               }
@@ -6803,16 +7020,6 @@
               "schema": {
                 "$ref": "#/components/schemas/ReleaseResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ReleaseResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ReleaseResource"
-              }
             }
           }
         },
@@ -6840,23 +7047,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ReleaseResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ReleaseResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -6909,6 +7100,207 @@
         }
       }
     },
+    "/api/v3/releaseprofile": {
+      "post": {
+        "tags": [
+          "ReleaseProfile"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReleaseProfileResource"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReleaseProfileResource"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReleaseProfileResource"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReleaseProfileResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReleaseProfileResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReleaseProfileResource"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "ReleaseProfile"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReleaseProfileResource"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReleaseProfileResource"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReleaseProfileResource"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/releaseprofile/{id}": {
+      "delete": {
+        "tags": [
+          "ReleaseProfile"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "ReleaseProfile"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReleaseProfileResource"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReleaseProfileResource"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReleaseProfileResource"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReleaseProfileResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReleaseProfileResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReleaseProfileResource"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "ReleaseProfile"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReleaseProfileResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReleaseProfileResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReleaseProfileResource"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v3/release/push": {
       "post": {
         "tags": [
@@ -6917,16 +7309,6 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ReleaseResource"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ReleaseResource"
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/ReleaseResource"
               }
@@ -7255,207 +7637,6 @@
         }
       }
     },
-    "/api/v3/restriction": {
-      "get": {
-        "tags": [
-          "Restriction"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RestrictionResource"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RestrictionResource"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RestrictionResource"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Restriction"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RestrictionResource"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RestrictionResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/RestrictionResource"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/RestrictionResource"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RestrictionResource"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RestrictionResource"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v3/restriction/{id}": {
-      "put": {
-        "tags": [
-          "Restriction"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RestrictionResource"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RestrictionResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/RestrictionResource"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/RestrictionResource"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RestrictionResource"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RestrictionResource"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Restriction"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Restriction"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/RestrictionResource"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RestrictionResource"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RestrictionResource"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v3/rootfolder": {
       "post": {
         "tags": [
@@ -7676,7 +7857,24 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemResource"
+                }
+              }
+            }
           }
         }
       }
@@ -8086,35 +8284,6 @@
         }
       }
     },
-    "/api/v3/config/ui": {
-      "get": {
-        "tags": [
-          "UiConfig"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/UiConfigResource"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UiConfigResource"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UiConfigResource"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v3/config/ui/{id}": {
       "put": {
         "tags": [
@@ -8133,16 +8302,6 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UiConfigResource"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UiConfigResource"
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/UiConfigResource"
               }
@@ -8202,6 +8361,25 @@
                 }
               },
               "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UiConfigResource"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/config/ui": {
+      "get": {
+        "tags": [
+          "UiConfig"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UiConfigResource"
                 }
@@ -8363,21 +8541,6 @@
           "cleanTitle": {
             "type": "string",
             "nullable": true
-          },
-          "sourceId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "votes": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "voteCount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "language": {
-            "$ref": "#/components/schemas/Language"
           }
         },
         "additionalProperties": false
@@ -8403,21 +8566,23 @@
           "cleanTitle": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ApiInfoResource": {
+        "type": "object",
+        "properties": {
+          "current": {
+            "type": "string",
+            "nullable": true
           },
-          "sourceId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "votes": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "voteCount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "language": {
-            "$ref": "#/components/schemas/Language"
+          "deprecated": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -8430,13 +8595,89 @@
         ],
         "type": "string"
       },
+      "AuthenticationRequiredType": {
+        "enum": [
+          "enabled",
+          "disabledForLocalAddresses"
+        ],
+        "type": "string"
+      },
       "AuthenticationType": {
         "enum": [
           "none",
           "basic",
-          "forms"
+          "forms",
+          "external"
         ],
         "type": "string"
+      },
+      "AutoTaggingResource": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "removeTagsAutomatically": {
+            "type": "boolean"
+          },
+          "tags": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "specifications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutoTaggingSpecificationSchema"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AutoTaggingSpecificationSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "implementation": {
+            "type": "string",
+            "nullable": true
+          },
+          "implementationName": {
+            "type": "string",
+            "nullable": true
+          },
+          "negate": {
+            "type": "boolean"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Field"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       },
       "BackupResource": {
         "type": "object",
@@ -8560,13 +8801,6 @@
           "sortDirection": {
             "$ref": "#/components/schemas/SortDirection"
           },
-          "filters": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PagingResourceFilter"
-            },
-            "nullable": true
-          },
           "totalRecords": {
             "type": "integer",
             "format": "int32"
@@ -8611,6 +8845,9 @@
           "sortTitle": {
             "type": "string",
             "nullable": true
+          },
+          "status": {
+            "$ref": "#/components/schemas/MovieStatusType"
           },
           "overview": {
             "type": "string",
@@ -8701,19 +8938,18 @@
               "$ref": "#/components/schemas/CollectionMovieResource"
             },
             "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "CollectionUpdateCollectionResource": {
-        "type": "object",
-        "properties": {
-          "id": {
+          },
+          "missingMovies": {
             "type": "integer",
             "format": "int32"
           },
-          "monitored": {
-            "type": "boolean",
+          "tags": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
             "nullable": true
           }
         },
@@ -8722,16 +8958,33 @@
       "CollectionUpdateResource": {
         "type": "object",
         "properties": {
-          "collections": {
+          "collectionIds": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CollectionUpdateCollectionResource"
+              "type": "integer",
+              "format": "int32"
             },
+            "nullable": true
+          },
+          "monitored": {
+            "type": "boolean",
             "nullable": true
           },
           "monitorMovies": {
             "type": "boolean",
             "nullable": true
+          },
+          "qualityProfileId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "rootFolderPath": {
+            "type": "string",
+            "nullable": true
+          },
+          "minimumAvailability": {
+            "$ref": "#/components/schemas/MovieStatusType"
           }
         },
         "additionalProperties": false
@@ -8769,6 +9022,10 @@
             "readOnly": true
           },
           "isTypeExclusive": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "isLongRunning": {
             "type": "boolean",
             "readOnly": true
           },
@@ -8836,6 +9093,9 @@
           "status": {
             "$ref": "#/components/schemas/CommandStatus"
           },
+          "result": {
+            "$ref": "#/components/schemas/CommandResult"
+          },
           "queued": {
             "type": "string",
             "format": "date-time"
@@ -8882,6 +9142,14 @@
           }
         },
         "additionalProperties": false
+      },
+      "CommandResult": {
+        "enum": [
+          "unknown",
+          "successful",
+          "unsuccessful"
+        ],
+        "type": "string"
       },
       "CommandStatus": {
         "enum": [
@@ -9000,7 +9268,8 @@
             "nullable": true
           },
           "includeCustomFormatWhenRenaming": {
-            "type": "boolean"
+            "type": "boolean",
+            "nullable": true
           },
           "specifications": {
             "type": "array",
@@ -9058,6 +9327,13 @@
         },
         "additionalProperties": false
       },
+      "DatabaseType": {
+        "enum": [
+          "sqLite",
+          "postgreSQL"
+        ],
+        "type": "string"
+      },
       "DelayProfileResource": {
         "type": "object",
         "properties": {
@@ -9084,6 +9360,13 @@
           },
           "bypassIfHighestQuality": {
             "type": "boolean"
+          },
+          "bypassIfAboveCustomFormatScore": {
+            "type": "boolean"
+          },
+          "minimumCustomFormatScore": {
+            "type": "integer",
+            "format": "int32"
           },
           "order": {
             "type": "integer",
@@ -9127,6 +9410,48 @@
         },
         "additionalProperties": false
       },
+      "DownloadClientBulkResource": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "applyTags": {
+            "$ref": "#/components/schemas/ApplyTags"
+          },
+          "enable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "priority": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "removeCompletedDownloads": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "removeFailedDownloads": {
+            "type": "boolean",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "DownloadClientConfigResource": {
         "type": "object",
         "properties": {
@@ -9146,6 +9471,9 @@
             "format": "int32"
           },
           "autoRedownloadFailed": {
+            "type": "boolean"
+          },
+          "autoRedownloadFailedFromInteractiveSearch": {
             "type": "boolean"
           }
         },
@@ -9292,6 +9620,10 @@
             "type": "string",
             "nullable": true
           },
+          "helpTextWarning": {
+            "type": "string",
+            "nullable": true
+          },
           "helpLink": {
             "type": "string",
             "nullable": true
@@ -9325,9 +9657,15 @@
             "type": "string",
             "nullable": true
           },
+          "privacy": {
+            "$ref": "#/components/schemas/PrivacyLevel"
+          },
           "placeholder": {
             "type": "string",
             "nullable": true
+          },
+          "isFloat": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -9405,6 +9743,10 @@
             },
             "nullable": true
           },
+          "customFormatScore": {
+            "type": "integer",
+            "format": "int32"
+          },
           "qualityCutoffNotMet": {
             "type": "boolean"
           },
@@ -9451,13 +9793,6 @@
           "sortDirection": {
             "$ref": "#/components/schemas/SortDirection"
           },
-          "filters": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PagingResourceFilter"
-            },
-            "nullable": true
-          },
           "totalRecords": {
             "type": "integer",
             "format": "int32"
@@ -9500,6 +9835,9 @@
           "authenticationMethod": {
             "$ref": "#/components/schemas/AuthenticationType"
           },
+          "authenticationRequired": {
+            "$ref": "#/components/schemas/AuthenticationRequiredType"
+          },
           "analyticsEnabled": {
             "type": "boolean"
           },
@@ -9508,6 +9846,10 @@
             "nullable": true
           },
           "password": {
+            "type": "string",
+            "nullable": true
+          },
+          "passwordConfirmation": {
             "type": "string",
             "nullable": true
           },
@@ -9540,6 +9882,10 @@
             "nullable": true
           },
           "instanceName": {
+            "type": "string",
+            "nullable": true
+          },
+          "applicationUrl": {
             "type": "string",
             "nullable": true
           },
@@ -9710,14 +10056,55 @@
         },
         "additionalProperties": false
       },
+      "ImportListBulkResource": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "applyTags": {
+            "$ref": "#/components/schemas/ApplyTags"
+          },
+          "enabled": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "enableAuto": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "rootFolderPath": {
+            "type": "string",
+            "nullable": true
+          },
+          "qualityProfileId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "minimumAvailability": {
+            "$ref": "#/components/schemas/MovieStatusType"
+          }
+        },
+        "additionalProperties": false
+      },
       "ImportListConfigResource": {
         "type": "object",
         "properties": {
           "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "importListSyncInterval": {
             "type": "integer",
             "format": "int32"
           },
@@ -9814,6 +10201,9 @@
           "listOrder": {
             "type": "integer",
             "format": "int32"
+          },
+          "minRefreshInterval": {
+            "$ref": "#/components/schemas/TimeSpan"
           }
         },
         "additionalProperties": false
@@ -9824,10 +10214,53 @@
           "tmdb",
           "trakt",
           "plex",
+          "simkl",
           "other",
           "advanced"
         ],
         "type": "string"
+      },
+      "IndexerBulkResource": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "applyTags": {
+            "$ref": "#/components/schemas/ApplyTags"
+          },
+          "enableRss": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "enableAutomaticSearch": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "enableInteractiveSearch": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "priority": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       },
       "IndexerConfigResource": {
         "type": "object",
@@ -10003,6 +10436,16 @@
         },
         "additionalProperties": false
       },
+      "LocalizationLanguageResource": {
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "LogFileResource": {
         "type": "object",
         "properties": {
@@ -10085,13 +10528,6 @@
           "sortDirection": {
             "$ref": "#/components/schemas/SortDirection"
           },
-          "filters": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PagingResourceFilter"
-            },
-            "nullable": true
-          },
           "totalRecords": {
             "type": "integer",
             "format": "int32"
@@ -10141,6 +10577,17 @@
           "downloadId": {
             "type": "string",
             "nullable": true
+          },
+          "customFormats": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomFormatResource"
+            },
+            "nullable": true
+          },
+          "customFormatScore": {
+            "type": "integer",
+            "format": "int32"
           },
           "rejections": {
             "type": "array",
@@ -10204,6 +10651,17 @@
             "type": "string",
             "nullable": true
           },
+          "customFormats": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomFormatResource"
+            },
+            "nullable": true
+          },
+          "customFormatScore": {
+            "type": "integer",
+            "format": "int32"
+          },
           "rejections": {
             "type": "array",
             "items": {
@@ -10238,7 +10696,8 @@
           "banner",
           "fanart",
           "screenshot",
-          "headshot"
+          "headshot",
+          "clearlogo"
         ],
         "type": "string"
       },
@@ -10281,13 +10740,17 @@
             "type": "string",
             "nullable": true
           },
-          "videoDynamicRangeType": {
-            "type": "string",
-            "nullable": true
-          },
           "videoFps": {
             "type": "number",
             "format": "double"
+          },
+          "videoDynamicRange": {
+            "type": "string",
+            "nullable": true
+          },
+          "videoDynamicRangeType": {
+            "type": "string",
+            "nullable": true
           },
           "resolution": {
             "type": "string",
@@ -10367,6 +10830,13 @@
           },
           "copyUsingHardlinks": {
             "type": "boolean"
+          },
+          "useScriptImport": {
+            "type": "boolean"
+          },
+          "scriptImportPath": {
+            "type": "string",
+            "nullable": true
           },
           "importExtraFiles": {
             "type": "boolean"
@@ -10538,6 +11008,15 @@
               "$ref": "#/components/schemas/MovieMetadata"
             },
             "nullable": true
+          },
+          "tags": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -10677,6 +11156,10 @@
               "$ref": "#/components/schemas/CustomFormatResource"
             },
             "nullable": true
+          },
+          "customFormatScore": {
+            "type": "integer",
+            "format": "int32"
           },
           "mediaInfo": {
             "$ref": "#/components/schemas/MediaInfoResource"
@@ -11233,7 +11716,13 @@
           "onHealthIssue": {
             "type": "boolean"
           },
+          "onHealthRestored": {
+            "type": "boolean"
+          },
           "onApplicationUpdate": {
+            "type": "boolean"
+          },
+          "onManualInteractionRequired": {
             "type": "boolean"
           },
           "supportsOnGrab": {
@@ -11263,27 +11752,19 @@
           "supportsOnHealthIssue": {
             "type": "boolean"
           },
+          "supportsOnHealthRestored": {
+            "type": "boolean"
+          },
           "supportsOnApplicationUpdate": {
+            "type": "boolean"
+          },
+          "supportsOnManualInteractionRequired": {
             "type": "boolean"
           },
           "includeHealthWarnings": {
             "type": "boolean"
           },
           "testCommand": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "PagingResourceFilter": {
-        "type": "object",
-        "properties": {
-          "key": {
-            "type": "string",
-            "nullable": true
-          },
-          "value": {
             "type": "string",
             "nullable": true
           }
@@ -11306,6 +11787,24 @@
           },
           "movie": {
             "$ref": "#/components/schemas/MovieResource"
+          },
+          "languages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Language"
+            },
+            "nullable": true
+          },
+          "customFormats": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomFormatResource"
+            },
+            "nullable": true
+          },
+          "customFormatScore": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -11366,11 +11865,8 @@
             "type": "integer",
             "format": "int32"
           },
-          "extraInfo": {
-            "type": "object",
-            "additionalProperties": {
-              "nullable": true
-            },
+          "hardcodedSubs": {
+            "type": "string",
             "nullable": true
           },
           "movieTitle": {
@@ -11385,6 +11881,25 @@
           }
         },
         "additionalProperties": false
+      },
+      "PingResource": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PrivacyLevel": {
+        "enum": [
+          "normal",
+          "password",
+          "apiKey",
+          "userName"
+        ],
+        "type": "string"
       },
       "ProfileFormatItemResource": {
         "type": "object",
@@ -11457,7 +11972,7 @@
             "nullable": true
           },
           "source": {
-            "$ref": "#/components/schemas/Source"
+            "$ref": "#/components/schemas/QualitySource"
           },
           "resolution": {
             "type": "integer",
@@ -11513,10 +12028,6 @@
           },
           "revision": {
             "$ref": "#/components/schemas/Revision"
-          },
-          "hardcodedSubs": {
-            "type": "string",
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -11594,6 +12105,21 @@
         },
         "additionalProperties": false
       },
+      "QualitySource": {
+        "enum": [
+          "unknown",
+          "cam",
+          "telesync",
+          "telecine",
+          "workprint",
+          "dvd",
+          "tv",
+          "webdl",
+          "webrip",
+          "bluray"
+        ],
+        "type": "string"
+      },
       "QueueBulkResource": {
         "type": "object",
         "properties": {
@@ -11639,6 +12165,10 @@
               "$ref": "#/components/schemas/CustomFormatResource"
             },
             "nullable": true
+          },
+          "customFormatScore": {
+            "type": "integer",
+            "format": "int32"
           },
           "size": {
             "type": "number",
@@ -11720,13 +12250,6 @@
           },
           "sortDirection": {
             "$ref": "#/components/schemas/SortDirection"
-          },
-          "filters": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PagingResourceFilter"
-            },
-            "nullable": true
           },
           "totalRecords": {
             "type": "integer",
@@ -11838,6 +12361,42 @@
         ],
         "type": "string"
       },
+      "ReleaseProfileResource": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "required": {
+            "nullable": true
+          },
+          "ignored": {
+            "nullable": true
+          },
+          "indexerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tags": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ReleaseResource": {
         "type": "object",
         "properties": {
@@ -11924,6 +12483,11 @@
             },
             "nullable": true
           },
+          "mappedMovieId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
           "approved": {
             "type": "boolean"
           },
@@ -12007,6 +12571,19 @@
             "type": "integer",
             "format": "int32",
             "nullable": true
+          },
+          "downloadClientId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "downloadClient": {
+            "type": "string",
+            "nullable": true
+          },
+          "shouldOverride": {
+            "type": "boolean",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -12067,37 +12644,6 @@
         ],
         "type": "string"
       },
-      "RestrictionResource": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "required": {
-            "type": "string",
-            "nullable": true
-          },
-          "preferred": {
-            "type": "string",
-            "nullable": true
-          },
-          "ignored": {
-            "type": "string",
-            "nullable": true
-          },
-          "tags": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "Revision": {
         "type": "object",
         "properties": {
@@ -12144,6 +12690,14 @@
         },
         "additionalProperties": false
       },
+      "RuntimeMode": {
+        "enum": [
+          "console",
+          "service",
+          "tray"
+        ],
+        "type": "string"
+      },
       "SelectOption": {
         "type": "object",
         "properties": {
@@ -12177,21 +12731,6 @@
         ],
         "type": "string"
       },
-      "Source": {
-        "enum": [
-          "unknown",
-          "cam",
-          "telesync",
-          "telecine",
-          "workprint",
-          "dvd",
-          "tv",
-          "webdl",
-          "webrip",
-          "bluray"
-        ],
-        "type": "string"
-      },
       "SourceType": {
         "enum": [
           "tmdb",
@@ -12201,6 +12740,121 @@
         ],
         "type": "string"
       },
+      "SystemResource": {
+        "type": "object",
+        "properties": {
+          "appName": {
+            "type": "string",
+            "nullable": true
+          },
+          "instanceName": {
+            "type": "string",
+            "nullable": true
+          },
+          "version": {
+            "type": "string",
+            "nullable": true
+          },
+          "buildTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isDebug": {
+            "type": "boolean"
+          },
+          "isProduction": {
+            "type": "boolean"
+          },
+          "isAdmin": {
+            "type": "boolean"
+          },
+          "isUserInteractive": {
+            "type": "boolean"
+          },
+          "startupPath": {
+            "type": "string",
+            "nullable": true
+          },
+          "appData": {
+            "type": "string",
+            "nullable": true
+          },
+          "osName": {
+            "type": "string",
+            "nullable": true
+          },
+          "osVersion": {
+            "type": "string",
+            "nullable": true
+          },
+          "isNetCore": {
+            "type": "boolean"
+          },
+          "isLinux": {
+            "type": "boolean"
+          },
+          "isOsx": {
+            "type": "boolean"
+          },
+          "isWindows": {
+            "type": "boolean"
+          },
+          "isDocker": {
+            "type": "boolean"
+          },
+          "mode": {
+            "$ref": "#/components/schemas/RuntimeMode"
+          },
+          "branch": {
+            "type": "string",
+            "nullable": true
+          },
+          "databaseType": {
+            "$ref": "#/components/schemas/DatabaseType"
+          },
+          "databaseVersion": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "authentication": {
+            "$ref": "#/components/schemas/AuthenticationType"
+          },
+          "migrationVersion": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "urlBase": {
+            "type": "string",
+            "nullable": true
+          },
+          "runtimeVersion": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "runtimeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "packageVersion": {
+            "type": "string",
+            "nullable": true
+          },
+          "packageAuthor": {
+            "type": "string",
+            "nullable": true
+          },
+          "packageUpdateMechanism": {
+            "$ref": "#/components/schemas/UpdateMechanism"
+          },
+          "packageUpdateMechanismMessage": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "TMDbCountryCode": {
         "enum": [
           "au",
@@ -12209,6 +12863,7 @@
           "fr",
           "de",
           "gb",
+          "ie",
           "it",
           "es",
           "us",
@@ -12235,22 +12890,6 @@
             },
             "nullable": true
           },
-          "notificationIds": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "nullable": true
-          },
-          "restrictionIds": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "nullable": true
-          },
           "importListIds": {
             "type": "array",
             "items": {
@@ -12259,7 +12898,15 @@
             },
             "nullable": true
           },
-          "movieIds": {
+          "notificationIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "releaseProfileIds": {
             "type": "array",
             "items": {
               "type": "integer",
@@ -12268,6 +12915,30 @@
             "nullable": true
           },
           "indexerIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "downloadClientIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "autoTagIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "movieIds": {
             "type": "array",
             "items": {
               "type": "integer",
@@ -12469,6 +13140,10 @@
           "uiLanguage": {
             "type": "integer",
             "format": "int32"
+          },
+          "theme": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
